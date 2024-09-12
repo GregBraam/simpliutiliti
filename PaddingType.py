@@ -1,0 +1,7 @@
+
+from enum import IntEnum
+
+LARGEST = 'LARGEST'
+INDIVIDUAL = 'INDIVIDUAL'
+VALUE = 'VALUE'
+
