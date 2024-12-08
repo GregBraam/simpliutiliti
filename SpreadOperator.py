@@ -41,9 +41,8 @@ class SpreadOperator(bpy.types.Operator):
 
         # 2 axis
         if number_of_axes == 2:
-            self.report({"WARNING"}, "Not implemented.")
-            return {"CANCELLED"}
-            # self.twoAxisSpread(bpy.context.selected_objects, padding_type, padding_value)
+            (primary_axis,secondary_axis) = self.getAxes(use_x,use_y,use_z)
+            self.twoAxisSpread(bpy.context.selected_objects, padding_type, padding_value,primary_axis,secondary_axis)
 
         if number_of_axes == 3:
             self.report({"WARNING"}, "Not implemented.")
@@ -76,11 +75,16 @@ class SpreadOperator(bpy.types.Operator):
             self.distributeAlongAxisWithPaddingValue(objects,padding_value,axis)
             return
         
-    def twoAxisSpread(self, objects, padding_type, padding_value):
-        #self.resetLocation(objects)
+    def twoAxisSpread(self, objects, padding_type, padding_value, primary_axis, secondary_axis):
+        self.resetLocation(objects)
         axis_length = math.sqrt(len(objects))
-        if not axis_length.is_integer():
-            axis_length = math.ceil(axis_length)
+        axis_length = math.ceil(axis_length)
+
+        for index in range(0,axis_length):
+            print(axis_length)
+            print(objects[index*axis_length:(index+1)*axis_length])
+            print("\n")
+
 
         # Take n from objects list and spread it
 
@@ -113,4 +117,16 @@ class SpreadOperator(bpy.types.Operator):
             return AxisType.AxisType.YAxis
         if use_z:
             return AxisType.AxisType.ZAxis
+        
+    def getAxes(self,use_x,use_y,use_z):
+        axes = []
+        if use_x:
+            axes.append(AxisType.AxisType.XAxis)
+        if use_y:
+            axes.append(AxisType.AxisType.YAxis)
+        if use_z:
+            axes.append(AxisType.AxisType.ZAxis)
+
+        return axes
+
 
